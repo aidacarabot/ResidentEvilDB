@@ -28,15 +28,26 @@ const createGame = async (req, res, next) => {
 //! UPDATE
 const updateGame = async (req, res, next) => {
   try {
-    const { id } = req.params
-    const updatedGame = await Game.findByIdAndUpdate(id, req.body, {
+    const { id } = req.params;
+    const { characters, ...updateData } = req.body; // Extrae el campo characters de req.body y lo almacena en una variable llamada characters.  El operador de propagación (...) se usa aquí para capturar todos los otros campos que quedan en req.body (excepto characters). Estos campos se agrupan en un nuevo objeto llamado updateData.
+
+    // Actualiza el juego con los datos que no son del array de personajes
+    const updatedGame = await Game.findByIdAndUpdate(id, updateData, {
       new: true
-    })
-    return res.status(200).json(updatedGame)
+    });
+
+    // Si hay personajes para agregar, utiliza $addToSet para evitar duplicados
+    if (characters && characters.length > 0) {
+      await Game.findByIdAndUpdate(id, {
+        $addToSet: { characters: { $each: characters } } // Añadir sin duplicar
+      }, { new: true });
+    }
+
+    return res.status(200).json(updatedGame);
   } catch (error) {
-    return res.status(400).json('Error with petition 👎')
+    return res.status(400).json('Error with petition 👎');
   }
-}
+};
 
 //! DELETE
 const deleteGame = async (req, res, next) => {

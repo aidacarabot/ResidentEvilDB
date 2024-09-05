@@ -6,8 +6,8 @@
   "scripts": {
     "stat": "node index.js",
     "dev": "nodemon index.js",
-    "seedGames": "node ./utils/seeds/games.seeds.js",
-    "seedCharacters": "node ./utils/seeds/characters.seeds.js"
+    "seedGames": "node ./src/utils/seeds/games.seeds.js",
+    "seedCharacters": "node ./src/utils/seeds/characters.seeds.js"
   },
   "keywords": [],
   "author": "",

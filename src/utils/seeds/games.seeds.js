@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Game = require("../../src/api/models/games");
 const gamesData = require("../../src/data/games");
 
-mongoose.connect("mongodb+srv://root:root@cluster0.p3tgb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(async () => {
     console.log("Connected to the database");
 

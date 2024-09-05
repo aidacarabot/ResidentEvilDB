@@ -1,4 +1,4 @@
-````markdown
+```markdown
 # Proyecto API REST - Juegos y Personajes de Resident Evil
 
 Este es un proyecto de API REST que maneja una base de datos de juegos y personajes de la franquicia Resident Evil. La API permite crear, leer, actualizar y eliminar tanto juegos como personajes. Además, la API está diseñada para relacionar personajes con los juegos en los que aparecen.
@@ -18,7 +18,6 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
    git clone https://github.com/aidact3/ResidentEvilDB
    cd ResidentEvilDB
    ```
-````
 
 2. **Instalar Dependencias:**
 
@@ -51,7 +50,7 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
 
 #### `GET /api/v1/games`
 
-- **Descripción:** Obtiene la lista de todos los juegos en la base de datos.
+- **Descripción:** Obtiene la lista de todos los juegos en la base de datos, incluyendo los nombres de los personajes asociados en lugar de sus IDs.
 - **Respuesta Exitosa:**
 
   - Código: 200
@@ -109,7 +108,7 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
 
 #### `PUT /api/v1/games/:id`
 
-- **Descripción:** Actualiza un juego existente en la base de datos.
+- **Descripción:** Actualiza un juego existente en la base de datos, asegurando que los personajes en el array no se borren y evitando duplicados al agregar nuevos personajes.
 - **Parámetros de Ruta:**
   - `id`: El ID del juego que se va a actualizar.
 - **Parámetros de Cuerpo:** Mismos que en `POST /api/v1/games`.
@@ -128,6 +127,8 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
       "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/9/96/Resident_Evil_Village.png"
     }
     ```
+
+  **Nota:** Este endpoint utiliza el operador `$addToSet` para evitar la eliminación de datos relacionados y prevenir duplicados en el array de personajes.
 
 #### `DELETE /api/v1/games/:id`
 
@@ -226,7 +227,9 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
       "name": "Chris Redfield",
       "role": "Protagonist",
       "bio": "Chris Redfield es un veterano miembro de S.T.A.R.S. y uno de los protagonistas más importantes de la serie.",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRedfieldResidentEvil5render.png"
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRed
+
+fieldResidentEvil5render.png"
     }
     ```
 
@@ -234,10 +237,7 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
 
 - **Descripción:** Elimina un personaje de la base de datos.
 - **Parámetros de Ruta:**
-  - `id`:
-
-El ID del personaje que se va a eliminar.
-
+  - `id`: El ID del personaje que se va a eliminar.
 - **Respuesta Exitosa:**
 
   - Código: 200
@@ -255,3 +255,18 @@ El ID del personaje que se va a eliminar.
       }
     }
     ```
+
+## Manejo de Datos Relacionados y Evitar Duplicados
+
+### Actualización de Juegos
+
+Al actualizar un juego, la API utiliza el operador `$addToSet` para agregar personajes al array `characters` sin eliminar los personajes ya existentes. Este enfoque también evita la creación de duplicados en el array, garantizando que cada personaje solo aparezca una vez en la lista de personajes relacionados con un juego.
+
+### Semilla de Datos
+
+Si utilizas una semilla para poblar la base de datos, asegúrate de que la semilla esté diseñada para evitar duplicados al verificar si los juegos y personajes ya existen antes de insertarlos.
+
+### Relación entre Juegos y Personajes
+
+Los juegos están relacionados con los personajes mediante un array de ObjectIds que hacen referencia a los documentos de personajes. Al consultar los juegos, la API usa `populate` para devolver los nombres de los personajes en lugar de sus IDs, mejorando la legibilidad de los datos devueltos.
+```
