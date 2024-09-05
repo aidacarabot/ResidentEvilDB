@@ -1,4 +1,4 @@
-```markdown
+
 # Proyecto API REST - Juegos y Personajes de Resident Evil
 
 Este es un proyecto de API REST que maneja una base de datos de juegos y personajes de la franquicia Resident Evil. La API permite crear, leer, actualizar y eliminar tanto juegos como personajes. Además, la API está diseñada para relacionar personajes con los juegos en los que aparecen.
