@@ -227,10 +227,7 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
       "name": "Chris Redfield",
       "role": "Protagonist",
       "bio": "Chris Redfield es un veterano miembro de S.T.A.R.S. y uno de los protagonistas más importantes de la serie.",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRed
-
-fieldResidentEvil5render.png"
-    }
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRedfieldResidentEvilrender.png"}
     ```
 
 #### `DELETE /api/v1/characters/:id`
@@ -269,4 +266,3 @@ Si utilizas una semilla para poblar la base de datos, asegúrate de que la semil
 ### Relación entre Juegos y Personajes
 
 Los juegos están relacionados con los personajes mediante un array de ObjectIds que hacen referencia a los documentos de personajes. Al consultar los juegos, la API usa `populate` para devolver los nombres de los personajes en lugar de sus IDs, mejorando la legibilidad de los datos devueltos.
-```
