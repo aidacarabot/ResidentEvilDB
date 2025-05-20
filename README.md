@@ -1,144 +1,143 @@
+# 🎮 Resident Evil REST API Project - Games & Characters
 
-# Proyecto API REST - Juegos y Personajes de Resident Evil
+This is a REST API project that manages a database of games and characters from the Resident Evil franchise. The API allows creating, reading, updating, and deleting both games and characters. Additionally, the API is designed to link characters to the games they appear in. 🧟‍♂️🕹️
 
-Este es un proyecto de API REST que maneja una base de datos de juegos y personajes de la franquicia Resident Evil. La API permite crear, leer, actualizar y eliminar tanto juegos como personajes. Además, la API está diseñada para relacionar personajes con los juegos en los que aparecen.
+## 🛠️ Technologies Used
 
-## Tecnologías Utilizadas
+- **Node.js** 🟢
+- **Express.js** 🚀
+- **Mongoose** (ODM for MongoDB) 📚
+- **MongoDB** (using MongoDB Atlas) 🍃
 
-- **Node.js**
-- **Express.js**
-- **Mongoose** (ODM para MongoDB)
-- **MongoDB** (usando MongoDB Atlas)
+## ⚙️ Project Setup
 
-## Configuración del Proyecto
-
-1. **Clonar el Repositorio:**
+1. **Clone the Repository:**
 
    ```bash
    git clone https://github.com/aidact3/ResidentEvilDB
    cd ResidentEvilDB
    ```
 
-2. **Instalar Dependencias:**
+2. **Install Dependencies:**
 
-   Asegúrate de tener `Node.js` y `npm` instalados.
+   Make sure you have `Node.js` and `npm` installed.
 
    ```bash
    npm install
    ```
 
-3. **Configuración de Variables de Entorno:**
+3. **Set Environment Variables:**
 
-   Crea un archivo `.env` en la raíz del proyecto con las siguientes variables:
+   Create a `.env` file at the root with the following variables:
 
    ```bash
-   MONGODB_URI=mongodb+srv://tu-usuario:tu-contraseña@cluster0.mongodb.net/tu-base-de-datos?retryWrites=true&w=majority
+   MONGODB_URI=mongodb+srv://your-user:your-password@cluster0.mongodb.net/your-database?retryWrites=true&w=majority
    PORT=3000
    ```
 
-4. **Iniciar el Servidor:**
+4. **Start the Server:**
 
    ```bash
    npm start
    ```
 
-   El servidor estará corriendo en `http://localhost:3000`.
+   The server will run at `http://localhost:3000`. 🚀
 
-## Endpoints de la API
+## 🔌 API Endpoints
 
-### **Juegos (Games)**
+### 🎲 Games
 
 #### `GET /api/v1/games`
 
-- **Descripción:** Obtiene la lista de todos los juegos en la base de datos, incluyendo los nombres de los personajes asociados en lugar de sus IDs.
-- **Respuesta Exitosa:**
+- **Description:** Gets a list of all games in the database, including the names of associated characters instead of their IDs.
+- **Success Response:**
 
-  - Código: 200
-  - Ejemplo de Respuesta:
+  - Status: 200
+  - Example:
 
     ```json
     [
       {
         "title": "Resident Evil",
         "releaseDate": "1996-03-22T00:00:00.000Z",
-        "storyline": "Un equipo de fuerzas especiales investiga una serie de asesinatos extraños...",
+        "storyline": "A special forces team investigates a series of strange murders...",
         "characters": ["Chris Redfield", "Jill Valentine"],
         "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/a/a6/Resident_Evil_1_cover.png"
       }
-      // Más juegos...
+      // More games...
     ]
     ```
 
 #### `POST /api/v1/games`
 
-- **Descripción:** Crea un nuevo juego en la base de datos.
-- **Parámetros:**
-  - `title`: (String) El título del juego (requerido).
-  - `releaseDate`: (Date) La fecha de lanzamiento del juego (requerido).
-  - `storyline`: (String) La trama del juego.
-  - `characters`: (Array de ObjectId) Los IDs de los personajes relacionados.
-  - `coverImageUrl`: (String) URL de la imagen de portada del juego.
-- **Ejemplo de Cuerpo de Solicitud:**
+- **Description:** Creates a new game in the database.
+- **Parameters:**
+  - `title` (String, required): The game's title.
+  - `releaseDate` (Date, required): Game release date.
+  - `storyline` (String): Game plot.
+  - `characters` (Array of ObjectIds): IDs of related characters.
+  - `coverImageUrl` (String): URL for the game's cover image.
+- **Example Request Body:**
 
   ```json
   {
     "title": "Resident Evil Village",
     "releaseDate": "2021-05-07",
-    "storyline": "Ethan Winters enfrenta nuevos horrores mientras busca a su hija...",
-    "characters": ["ObjectId_de_Ethan"],
+    "storyline": "Ethan Winters faces new horrors while searching for his daughter...",
+    "characters": ["ObjectId_of_Ethan"],
     "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/9/96/Resident_Evil_Village.png"
   }
   ```
 
-- **Respuesta Exitosa:**
+- **Success Response:**
 
-  - Código: 201
-  - Ejemplo de Respuesta:
+  - Status: 201
+  - Example:
 
     ```json
     {
       "_id": "60d8f681cba3d1e828a63bef",
       "title": "Resident Evil Village",
       "releaseDate": "2021-05-07T00:00:00.000Z",
-      "storyline": "Ethan Winters enfrenta nuevos horrores mientras busca a su hija...",
-      "characters": ["ObjectId_de_Ethan"],
+      "storyline": "Ethan Winters faces new horrors while searching for his daughter...",
+      "characters": ["ObjectId_of_Ethan"],
       "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/9/96/Resident_Evil_Village.png"
     }
     ```
 
 #### `PUT /api/v1/games/:id`
 
-- **Descripción:** Actualiza un juego existente en la base de datos, asegurando que los personajes en el array no se borren y evitando duplicados al agregar nuevos personajes.
-- **Parámetros de Ruta:**
-  - `id`: El ID del juego que se va a actualizar.
-- **Parámetros de Cuerpo:** Mismos que en `POST /api/v1/games`.
-- **Respuesta Exitosa:**
+- **Description:** Updates an existing game, making sure existing characters in the array aren't removed and preventing duplicates when adding new characters.
+- **Route Params:**
+  - `id`: The ID of the game to update.
+- **Body Params:** Same as POST `/api/v1/games`.
+- **Success Response:**
 
-  - Código: 200
-  - Ejemplo de Respuesta:
+  - Status: 200
+  - Example:
 
     ```json
     {
       "_id": "60d8f681cba3d1e828a63bef",
       "title": "Resident Evil Village",
       "releaseDate": "2021-05-07T00:00:00.000Z",
-      "storyline": "Ethan Winters enfrenta nuevos horrores mientras busca a su hija...",
-      "characters": ["ObjectId_de_Ethan"],
+      "storyline": "Ethan Winters faces new horrors while searching for his daughter...",
+      "characters": ["ObjectId_of_Ethan"],
       "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/9/96/Resident_Evil_Village.png"
     }
     ```
 
-  **Nota:** Este endpoint utiliza el operador `$addToSet` para evitar la eliminación de datos relacionados y prevenir duplicados en el array de personajes.
+  **Note:** This endpoint uses the `$addToSet` operator to avoid deleting related data and prevent duplicates in the characters array. ⚠️
 
 #### `DELETE /api/v1/games/:id`
 
-- **Descripción:** Elimina un juego de la base de datos.
-- **Parámetros de Ruta:**
-  - `id`: El ID del juego que se va a eliminar.
-- **Respuesta Exitosa:**
+- **Description:** Deletes a game from the database.
+- **Route Params:**
+  - `id`: The ID of the game to delete.
+- **Success Response:**
 
-  - Código: 200
-  - Ejemplo de Respuesta:
+  - Status: 200
+  - Example:
 
     ```json
     {
@@ -147,98 +146,99 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
         "_id": "60d8f681cba3d1e828a63bef",
         "title": "Resident Evil Village",
         "releaseDate": "2021-05-07T00:00:00.000Z",
-        "storyline": "Ethan Winters enfrenta nuevos horrores mientras busca a su hija...",
-        "characters": ["ObjectId_de_Ethan"],
+        "storyline": "Ethan Winters faces new horrors while searching for his daughter...",
+        "characters": ["ObjectId_of_Ethan"],
         "coverImageUrl": "https://upload.wikimedia.org/wikipedia/en/9/96/Resident_Evil_Village.png"
       }
     }
     ```
 
-### **Personajes (Characters)**
+### 🧟 Characters
 
 #### `GET /api/v1/characters`
 
-- **Descripción:** Obtiene la lista de todos los personajes en la base de datos.
-- **Respuesta Exitosa:**
+- **Description:** Gets all characters in the database.
+- **Success Response:**
 
-  - Código: 200
-  - Ejemplo de Respuesta:
+  - Status: 200
+  - Example:
 
     ```json
     [
       {
         "name": "Leon S. Kennedy",
         "role": "Protagonist",
-        "bio": "Leon S. Kennedy es un agente del gobierno de los EE.UU., conocido por su participación en incidentes bioterroristas.",
+        "bio": "Leon S. Kennedy is a U.S. government agent, known for his involvement in bioterror incidents.",
         "imageUrl": "https://upload.wikimedia.org/wikipedia/en/f/f5/LeonScottKennedy.png"
       }
-      // Más personajes...
+      // More characters...
     ]
     ```
 
 #### `POST /api/v1/characters`
 
-- **Descripción:** Crea un nuevo personaje en la base de datos.
-- **Parámetros:**
-  - `name`: (String) El nombre del personaje (requerido).
-  - `role`: (String) El rol del personaje en la historia.
-  - `bio`: (String) Biografía del personaje.
-  - `imageUrl`: (String) URL de la imagen del personaje.
-- **Ejemplo de Cuerpo de Solicitud:**
+- **Description:** Creates a new character.
+- **Parameters:**
+  - `name` (String, required): Character's name.
+  - `role` (String): Character's role in the story.
+  - `bio` (String): Character biography.
+  - `imageUrl` (String): URL to character image.
+- **Example Request Body:**
 
   ```json
   {
     "name": "Chris Redfield",
     "role": "Protagonist",
-    "bio": "Chris Redfield es un veterano miembro de S.T.A.R.S. y uno de los protagonistas más importantes de la serie.",
+    "bio": "Chris Redfield is a veteran S.T.A.R.S. member and one of the franchise's key protagonists.",
     "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRedfieldResidentEvil5render.png"
   }
   ```
 
-- **Respuesta Exitosa:**
+- **Success Response:**
 
-  - Código: 201
-  - Ejemplo de Respuesta:
+  - Status: 201
+  - Example:
 
     ```json
     {
       "_id": "60d8f681cba3d1e828a63bf2",
       "name": "Chris Redfield",
       "role": "Protagonist",
-      "bio": "Chris Redfield es un veterano miembro de S.T.A.R.S. y uno de los protagonistas más importantes de la serie.",
+      "bio": "Chris Redfield is a veteran S.T.A.R.S. member and one of the franchise's key protagonists.",
       "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRedfieldResidentEvil5render.png"
     }
     ```
 
 #### `PUT /api/v1/characters/:id`
 
-- **Descripción:** Actualiza un personaje existente en la base de datos.
-- **Parámetros de Ruta:**
-  - `id`: El ID del personaje que se va a actualizar.
-- **Parámetros de Cuerpo:** Mismos que en `POST /api/v1/characters`.
-- **Respuesta Exitosa:**
+- **Description:** Updates an existing character.
+- **Route Params:**
+  - `id`: The ID of the character to update.
+- **Body Params:** Same as POST `/api/v1/characters`.
+- **Success Response:**
 
-  - Código: 200
-  - Ejemplo de Respuesta:
+  - Status: 200
+  - Example:
 
     ```json
     {
       "_id": "60d8f681cba3d1e828a63bf2",
       "name": "Chris Redfield",
       "role": "Protagonist",
-      "bio": "Chris Redfield es un veterano miembro de S.T.A.R.S. y uno de los protagonistas más importantes de la serie.",
-      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRedfieldResidentEvilrender.png"}
+      "bio": "Chris Redfield is a veteran S.T.A.R.S. member and one of the franchise's key protagonists.",
+      "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRedfieldResidentEvilrender.png"
+    }
     ```
 
 #### `DELETE /api/v1/characters/:id`
 
-- **Descripción:** Elimina un personaje de la base de datos.
-- **Parámetros de Ruta:**
-  - `id`: El ID del personaje que se va a eliminar.
-- **Respuesta Exitosa:**
+- **Description:** Deletes a character from the database.
+- **Route Params:**
+  - `id`: The ID of the character to delete.
+- **Success Response:**
 
-  - Código: 200
-  - Ejemplo de Respuesta:
+  - Status: 200
+  - Example:
 
     ```json
     {
@@ -247,22 +247,22 @@ Este es un proyecto de API REST que maneja una base de datos de juegos y persona
         "_id": "60d8f681cba3d1e828a63bf2",
         "name": "Chris Redfield",
         "role": "Protagonist",
-        "bio": "Chris Redfield es un veterano miembro de S.T.A.R.S. y uno de los protagonistas más importantes de la serie.",
+        "bio": "Chris Redfield is a veteran S.T.A.R.S. member and one of the franchise's key protagonists.",
         "imageUrl": "https://upload.wikimedia.org/wikipedia/en/3/35/ChrisRedfieldResidentEvil5render.png"
       }
     }
     ```
 
-## Manejo de Datos Relacionados y Evitar Duplicados
+## 🔗 Handling Related Data and Avoiding Duplicates
 
-### Actualización de Juegos
+### Updating Games
 
-Al actualizar un juego, la API utiliza el operador `$addToSet` para agregar personajes al array `characters` sin eliminar los personajes ya existentes. Este enfoque también evita la creación de duplicados en el array, garantizando que cada personaje solo aparezca una vez en la lista de personajes relacionados con un juego.
+When updating a game, the API uses the `$addToSet` operator to add characters to the `characters` array without removing existing ones. This approach also prevents duplicates, ensuring each character appears only once in the related characters list for a game.
 
-### Semilla de Datos
+### Data Seeding
 
-Si utilizas una semilla para poblar la base de datos, asegúrate de que la semilla esté diseñada para evitar duplicados al verificar si los juegos y personajes ya existen antes de insertarlos.
+If you use seeds to populate the database, make sure the seed scripts check for existing games and characters before inserting, to avoid duplicates.
 
-### Relación entre Juegos y Personajes
+### Game-Character Relationship
 
-Los juegos están relacionados con los personajes mediante un array de ObjectIds que hacen referencia a los documentos de personajes. Al consultar los juegos, la API usa `populate` para devolver los nombres de los personajes en lugar de sus IDs, mejorando la legibilidad de los datos devueltos.
+Games are related to characters via an array of ObjectIds referencing character documents. When querying games, the API uses `populate` to return character names instead of IDs, improving data readability. 📖
